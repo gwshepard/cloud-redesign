@@ -1,0 +1,267 @@
+<project name="Struts2WebApp" basedir="." default="build-war">
+    <!-- Note: ant.project.name is the value of the project name attribute -->
+
+    <!-- Make the properties in database.properties available to targets below. -->
+    <property file="./database.properties"/>
+    <property environment="env"/>
+
+    <!-- Local system paths -->
+	<property name="main.dir" value="./src/main"/>
+    <property name="src.dir" value="${main.dir}/java"/>
+	<property name="webapp.dir" value="${main.dir}/webapp"/>
+    <property name="build.dir" value="./target"/>
+    <property name="WEB-INF.dir" value="${webapp.dir}/WEB-INF"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="resources.dir" value="${main.dir}/resources"/>
+    <property name="dist.dir" value="./dist"/>
+    <property name="hibernate.mapping.dir" value="${src.dir}/com/as/tutorial/model"/>
+    <property name="lib.dir" value="${WEB-INF.dir}/lib"/>
+	
+    <!-- Project settings -->
+    <property name="project.title" value="Struts 2 Web Application"/>
+    <property name="project.distname" value="Struts2WebApp"/>
+    <property name="project.version" value="1.0"/>
+    <property name="project.jar" value="${project.distname}-${project.version}.jar"/>
+
+    <!-- Compilation classpath -->
+    <path id="compile.classpath">
+    	<pathelement location="${resources.dir}"/>
+    	<pathelement location="${env.CATALINA_HOME}/common/lib/servlet-api.jar"/>
+        <fileset dir="${lib.dir}">
+          <include name="*.jar"/>
+        </fileset>
+    </path>
+	
+    <!-- Compiler options -->
+    <!-- For a release build, change the debug level to just "lines". -->
+    <property name="compile.debug" value="true" />
+    <property name="compile.debuglevel" value="lines,var,source" />
+    <property name="compile.deprecation" value="true" />
+    <property name="compile.optimize" value="false" />
+
+    <!-- ===============================================================-->
+    <!-- This target deletes and creates ${build.dir} to prepare for	--> 
+    <!-- a clean build.													-->
+    <!-- ===============================================================-->
+    <target name="clean" description="Prepare for clean build">
+        <delete dir="${build.dir}"/>
+        <mkdir  dir="${build.dir}"/>
+        <mkdir  dir="${classes.dir}"/>
+    </target>
+	
+    <!-- ===============================================================-->
+    <!-- This target performs pre-build initialization.					--> 
+    <!-- ===============================================================-->
+    <target name="init" depends="clean"
+        description="Initialization">
+    	<!-- Check timestamp on files -->
+        <tstamp/>
+        <tstamp>
+            <format property="copyright.year" pattern="yyyy"/>
+        </tstamp>
+    	<mkdir dir="${dist.dir}"/>
+    </target>
+	
+    <!-- ===============================================================-->
+    <!-- This target copies resource or configuration files prior to	-->
+    <!-- the build.														--> 
+    <!-- ===============================================================-->
+    <target name="copy-files" depends="init">
+        <copy todir="${classes.dir}">
+             <fileset dir="${src.dir}">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ===============================================================-->
+    <!-- This target compiles the .java files.							-->
+    <!-- ===============================================================-->
+    <target name="compile-source" depends="copy-files">
+        <echo level="info">Compiling...</echo>
+        <javac srcdir="${src.dir}"
+            destdir="${classes.dir}"
+            debug="${compile.debug}"
+        	debuglevel="${compile.debuglevel}"
+            deprecation="${compile.deprecation}"
+            optimize="${compile.optimize}"
+        	includeAntRuntime="no"
+            classpathref="compile.classpath">
+    	</javac>
+    </target>
+	
+    <!-- ===============================================================-->
+    <!-- This target builds the stand-alone application JAR.			-->
+    <!-- ===============================================================-->
+    <target name="build-jar" depends="compile-source"
+        description="Builds the application JAR.">
+        <jar destfile="${build.dir}/${project.jar}"
+        		compress="true"
+        		index="true">
+            <manifest>
+                <attribute name="Class-Path"
+                    value="${project.jar}"/>
+            </manifest>
+            <fileset dir="${classes.dir}">
+            	<exclude name="**/webapp/**" />
+            </fileset>
+        </jar>
+    </target>
+
+    <!-- ===============================================================-->
+    <!-- This target builds the WAR file.								-->
+    <!-- ===============================================================-->
+    <target name="build-war" depends="build-jar"
+        description="Builds the application WAR.">
+    	
+        <propertyfile comment="Build Information"
+            file="${build.dir}/build.properties">
+            <entry key="build.date" type="date" pattern="EEEE MMM dd, yyyy"
+                value="now"/>
+            <entry key="build.time" type="date" pattern="hh:mm:ss a zz"
+                value="now"/>
+            <entry key="build.username" value="${user.name}"/>
+            <entry key="build.computer" value="${env.COMPUTERNAME}"/>
+            <entry key="webapp.version" value="${project.version}"/>
+        </propertyfile>
+    	
+        <copy todir="${classes.dir}">
+	      	<fileset dir="${resources.dir}">
+	        </fileset>
+        </copy>
+
+        <!-- Copy tomcat-context.xml and rename for distribution -->
+        <copy tofile="${dist.dir}/${project.distname}.xml"
+            file="./tomcat-context.xml" overwrite="true">
+            <filterset>
+                <filter token="DATABASE_URL" value="${database.url}"/>
+                <filter token="DATABASE_DRIVER" value="${database.driver_class}"/>
+                <filter token="DATABASE_USERNAME" value="${database.username}"/>
+                <filter token="DATABASE_PASSWORD" value="${database.password}"/>
+                <filter token="DATABASE_NAME" value="${database.name}"/>
+            </filterset>
+        </copy>
+
+        <war
+            destfile="${dist.dir}/${project.distname}.war"
+        	
+            webxml="${WEB-INF.dir}/web.xml" compress="true">
+        	
+            <webinf dir="${WEB-INF.dir}">
+            	<include name="config/*.xml"/>
+            	<include name="tld/*"/>
+            	<include name="common/*"/>
+            	<include name="jsp/*"/>
+            	<exclude name="web.xml"/>
+            </webinf>
+
+        	<webinf dir="${build.dir}" includes="build.properties"/>
+        	
+        	<classes dir="${classes.dir}">
+        		<include name="**/webapp/**" />
+        		<include name="*.properties" />
+        		<include name="*.xml" />
+        		<include name="resources/*" />
+        		<exclude name="web.xml"/>
+        	</classes>
+        	
+            <zipfileset dir="${webapp.dir}/images" prefix="images"/>
+        	<zipfileset dir="${webapp.dir}/styles" prefix="styles"/>
+
+            <lib file="${build.dir}/${project.jar}"/>
+
+            <lib dir="${lib.dir}">
+        		<include name="*.jar"/>
+        		<exclude name="${database.jar}"/>
+        	</lib>
+        </war>
+    </target>
+	
+    <!-- ===============================================================-->
+    <!-- This target creates a database based on the entries in the		--> 
+    <!-- database.properties file.										-->
+    <!-- ===============================================================-->
+    <target name="database-create"
+        description="Creates a database for ${database.type.text}.">
+        <echo>Creating a database using create${database.type.text}Database.sql.</echo>
+        <echo>URL: ${database.admin.url}</echo>
+        <sql
+            driver="${database.driver_class}"
+            url="${database.admin.url}"
+            userid="${database.admin.username}"
+        	password="${database.admin.password}">
+
+            <classpath>
+                <pathelement location="${database.jar.location}"/>
+            </classpath>
+
+            <fileset dir=".">
+                <include name="create${database.type.text}Database.sql"/>
+            </fileset>
+        </sql>
+
+    </target>
+	
+    <!-- ===============================================================-->
+    <!-- This target generates the database schema and creates the		-->
+    <!-- database tables based on Hibernate's *.hbm.xml files.			-->
+    <!-- The SchemaExportTask class can be found in hibernate3.jar.		-->
+    <!-- ===============================================================-->
+    <target name="database-create-tables"
+        description="Creates the database tables.">
+        <taskdef name="schemaExportTask"
+            classname="org.hibernate.tool.hbm2ddl.SchemaExportTask">
+        	<classpath>
+        		<path refid="compile.classpath"/>
+        	</classpath>
+        </taskdef>
+    	
+    	<antcall target="database-hibernate-properties"/>
+        <schemaExportTask quiet="no" text="no" drop="no" delimiter=";"
+            properties="./hibernate.properties" output="create${database.type.text}DatabaseTables.sql">
+            <fileset dir="${hibernate.mapping.dir}" includes="**/*.hbm.xml"/>
+        </schemaExportTask>
+    </target>
+	
+    <!-- ===============================================================-->
+    <!-- This target drops the database tables from the database.		-->
+    <!-- The SchemaExportTask class can be found in hibernate3.jar.		-->
+    <!-- ===============================================================-->
+    <target name="database-drop-tables"
+        description="Drops the database tables.">
+        <taskdef name="schemaExportTask"
+            classname="org.hibernate.tool.hbm2ddl.SchemaExportTask">
+        	<classpath>
+        		<path refid="compile.classpath"/>
+        	</classpath>
+        </taskdef>
+    	<antcall target="database-hibernate-properties"/>
+        <schemaExportTask quiet="no" text="no" drop="yes" delimiter=";"
+            properties="./hibernate.properties" output="drop${database.type.text}DatabaseTables.sql">
+            <fileset dir="${hibernate.mapping.dir}" includes="**/*.hbm.xml"/>
+        </schemaExportTask>
+    </target>
+	
+    <!-- ===============================================================-->
+    <!-- This target creates a hibernate.properties file.				-->
+    <!-- The final "property" task makes the file available to other	-->
+    <!-- targets as "hibernate.properties".								-->
+    <!-- Dependent targets can use "antcall" to call this target before	-->
+    <!-- they need the values in hibernate.properties.					-->
+    <!-- The values of the variables in this target come from			-->
+    <!-- database.properties.											-->
+    <!-- ===============================================================-->
+	<target name="database-hibernate-properties">
+	    <propertyfile comment="Hibernate Properties" 
+	        file="./hibernate.properties">
+	    	<entry key="hibernate.dialect" value="${hibernate.dialect}"/>
+	    	<entry key="hibernate.connection.driver_class" value="${database.driver_class}"/>
+	    	<entry key="hibernate.connection.url" value="${database.url}"/>
+	    	<entry key="hibernate.connection.username" value="${database.admin.username}"/>
+	    	<entry key="hibernate.connection.password" value="${database.admin.password}"/>
+	    	<entry key="hibernate.connection.show_sql" value="${database.show_sql}"/>
+	     </propertyfile>
+	     <property file="hibernate.properties"/>
+	</target>
+
+</project>

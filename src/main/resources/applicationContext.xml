@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+	"http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+	<!-- JNDI DataSource -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/struts2webappdb"></property>
+	</bean>
+
+	<!-- Hibernate SessionFactory --> 
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"> 
+		<property name="dataSource"><ref local="dataSource"/></property> 
+		<property name="mappingResources"> 
+		<list>
+			<value>com/as/tutorial/model/Registration.hbm.xml</value>
+		</list>
+		</property> 
+		<property name="hibernateProperties"> 
+		<props> 
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+		</props> 
+		</property> 
+	</bean>
+
+	<!-- Transaction manager for the Hibernate SessionFactory. --> 
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"> 
+		<property name="sessionFactory"><ref local="sessionFactory"/></property> 
+	</bean>
+
+	<!-- RegistrationDAO: Hibernate implementation --> 
+	<bean id="registrationDAO" class="com.as.tutorial.dao.hibernate.RegistrationDAOHibernate"> 
+		<property name="sessionFactory"><ref local="sessionFactory"/></property> 
+	</bean>
+	
+		<!-- Registration Service -->
+	<bean id="registrationServiceTarget" 
+		class="com.as.tutorial.business.impl.RegistrationServiceImpl">
+		<property name="registrationDAO"><ref local="registrationDAO"/></property>
+	</bean>
+	
+		<!-- Transaction declarations for Registration Service -->
+	<bean id="registrationService" 
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/></property>
+		<property name="target"><ref local="registrationServiceTarget"/></property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert">PROPAGATION_REQUIRED</prop>
+				<prop key="update">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>
+
+

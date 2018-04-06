@@ -1,0 +1,301 @@
+/************************************************************************
+Title:       Struts2WebApp - Blue and Tan (v1.0)
+Authors:     A.B and D.G
+Updated:     May 15, 2006 (9:16 p.m.)
+Copyright:   ArcTech Software LLC
+************************************************************************/
+
+/************************************************************************
+* Global Elements
+************************************************************************/
+body {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	background: #AAA58E url(/struts2webapp/images/body-bg.gif) repeat-y top center;
+
+	color: #2C2C28;
+	font-size: small;
+	font-family: Verdana, "Lucida Grande", Arial, Sans-Serif;
+	font-weight: normal;
+	line-height: 160%;
+}
+
+h1 {
+	margin: 0 0 0 15px;
+	padding: 0;
+	background: transparent;
+	font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
+	font-weight: bold;
+	color: #FFFFFF;
+	font-size: 165%;
+	display: inline;
+	width: 300px;
+	height: 45px;
+	float: left;
+}
+
+h2 { 
+	width: 240px;
+	margin: 0 0 15px 0;
+	background: #FFFFFF;
+	font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
+	font-weight: bold;
+	color: #E39D24;
+	font-size: 150%;
+	border-bottom: 3px solid #D2D1BB;
+}
+
+div.mainContent h3 {
+	width: 240px;
+	margin: 10 0 7px 0;
+	padding: 0;
+	background: #FFFFFF;
+	font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
+	font-weight: bold;
+	color: #4B7AA5;
+	font-size: 130%;
+	border-bottom: 1px solid #E2E2DD;
+}
+
+div.sideBar h3 {
+	margin: 0 0 0 2px;
+	padding: 5px 0 0 2px;
+	font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
+	font-weight: bold;
+	font-size: 130%;
+	color: #4A78A4;
+	background: #F1F0E5 url(/struts2webapp/images/headings/h3-sb-bg.gif) no-repeat top right;
+	border-bottom: 1px solid #E7E6DA;
+}
+
+h4 {
+	width: 490px
+	height: 21px;
+	margin: 4px 0 4px 0;
+	padding: 0;	
+	color: #C98000;
+	background: #FFFFFF;
+	font-family: "Trebuchet MS", "Lucida Grande", Verdana, Arial, sans-serif;
+	font-weight: normal;
+	font-size: 140%;
+	border-bottom: 1px solid #E2E2DD;
+}
+
+h5 {
+	margin: 0 0 1px 0;
+	padding: 0;	
+	color: #2c2c28;
+	background: #FFFFFF;
+	font-family: Verdana, "Lucida Grande", Arial, sans-serif;
+	font-weight: bold;
+	font-size: 95%;
+}
+
+h6 {
+	margin: 0 0 1px 0;
+	padding: 0;	
+	color: #60605A;
+	background: #FFFFFF;
+	font-family: Verdana, "Lucida Grande", Arial, sans-serif;
+	font-weight: normal;
+	font-size: 95%;
+	text-transform: uppercase;
+}
+
+/************************************************************************
+* Body Link Elements
+************************************************************************/
+a:link, a:active, a:visited {
+	color: #E18400;
+	text-decoration: none;
+	background: transparent;
+}
+
+a:hover {
+	color: #E18400;
+	text-decoration: underline;
+	background: transparent;
+}
+
+/************************************************************************
+* Structural Elements
+************************************************************************/
+div.container {
+	margin: 0 auto;
+	padding: 0;
+	width: 720px;
+	font-size: 85%;
+	text-align: left;
+	background: transparent;
+	color: #2C2C28;
+}
+
+div.mainContent {
+	width: 240px;
+	margin: 10px 5px 0 5px;
+	padding: 0;
+	background: transparent;
+	position: relative;
+}
+
+/************************************************************************
+* Header Elements
+************************************************************************/
+div.topHeader {
+	width: 720px;
+	height: 45px;
+	margin: 0 0 10px 0;
+	padding: 0;
+	text-align: left;
+	background: url(/struts2webapp/images/master-head.gif) no-repeat;
+	color: #222222;
+}
+
+/************************************************************************
+* Miscellaneous Elements
+************************************************************************/
+div.mainContent p {
+	margin: 0 0 10px 0;
+	padding: 0;
+	background: transparent;
+}
+
+div.userError {
+	margin: 0 0 15px 0;
+	padding: 0;
+	background: #A91B1B;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+/************************************************************************
+* Sidebar Elements
+************************************************************************/
+div.sideBar {
+	float: right;
+	width: 210px;
+	margin: 0;
+	padding: 0;
+}
+
+div.sideBar ul {
+	width: 210px;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+div.sideBar ul li {
+	height: 20px;
+	padding: 0 0 0 5px;
+}
+
+div.sideBar a:link, div.sideBar a:active, div.sideBar a:visited {
+	color: #E18400;
+	text-decoration: none;
+}
+
+div.sideBar a:hover{
+	color: #E18400;
+	text-decoration: underline;
+}
+
+div.sbModule {
+	margin: 0 0 20px 0;
+	padding: 0 0 20px 0;
+	background: #F1F0E5 url(/struts2webapp/images/sb-module-bg.gif) no-repeat bottom left;
+}	
+
+/************************************************************************
+* Footer Elements
+************************************************************************/
+div.mainFooter {
+	width: 720px;
+	height: 25px;
+	clear: both;
+	margin: 25px 0 20px 0;
+	padding: 0;
+	background: #F1F0E5;
+	border-top: 1px solid #D3D2C5;
+	border-bottom: 1px solid #D3D2C5;
+}
+
+.footer_nav {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.footer_nav li {
+	display: inline;
+	margin: 0 10px 0 5px;
+	padding: 0;
+}
+
+.footer_nav a:link, .footer_nav a:active, .footer_nav a:visited {
+	color: #807F6F;
+	text-decoration: none;
+}
+
+.footer_nav a:hover {
+	color: #5F5E52;
+	text-decoration: underline;
+}
+
+/************************************************************************
+* Navigation Elements
+************************************************************************/
+.navigation a:link, .navigation a:active, .navigation a:visited {
+	color: #88B1D8;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.navigation a:hover {
+	color: #DFEFFF;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.navigation {
+	float: right;
+	margin: 10px 2px 0 0;
+	padding: 0;
+	list-style-type: none;
+	background: transparent;
+}
+
+.navigation li {
+	padding: 0 15px 0 0;
+	display: inline;
+}
+
+/************************************************************************
+* Universal Form Elements
+************************************************************************/
+
+.registration_text {
+	width: 300px;
+	margin: 0 0 3px 0;
+	padding: 0 0 0 2px;
+	height: 16px;
+	border: 1px solid #959485;
+	color: #222222;
+	font-family: Verdana, "Lucida Grande", Arial, Sans-Serif;
+	font-weight: normal;
+}
+
+span.registration_disabled {
+	color: #69685F;
+}
+
+span.general_text {
+	margin: 0 0 1px 0;
+	padding: 0;	
+	color: #60605A;
+	background: #FFFFFF;
+	font-family: Verdana, "Lucida Grande", Arial, sans-serif;
+	font-weight: normal;
+	font-size: 95%;
+}

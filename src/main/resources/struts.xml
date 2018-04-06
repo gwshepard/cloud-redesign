@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <package name="struts2webapp" extends="tiles-default" >
+        
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" default="true" />
+		</result-types>
+	
+		<global-results>
+			<result name="error" type="dispatcher">/WEB-INF/jsp/Error.jsp</result>
+			<result name="success" type="redirect-action">default</result>
+		</global-results>
+	
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Throwable" result="error"/> 
+		</global-exception-mappings>
+		
+		<action name="registration_*" method="{1}" class="com.as.tutorial.webapp.action.RegistrationAction">
+			<result name="input">registration</result>
+		</action>
+		
+		<action name="registrationUpdate_*" method="{1}" class="com.as.tutorial.webapp.action.RegistrationAction">
+			<result name="input">registrationUpdate</result>
+		</action>
+	
+		<action name="login_*" method="{1}" class="com.as.tutorial.webapp.action.LoginAction">
+			<result name="input">login</result>
+		</action>
+	
+		<action name="logout" class="com.as.tutorial.webapp.action.LogoutAction">
+		</action>
+	        
+		<action name="*">
+			<result>welcome</result>
+		</action>
+
+    </package>
+
+</struts>

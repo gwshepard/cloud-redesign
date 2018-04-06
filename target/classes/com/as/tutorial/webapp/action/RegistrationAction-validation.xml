@@ -1,0 +1,57 @@
+<!DOCTYPE validators PUBLIC 
+"-//OpenSymphony Group//XWork Validator 1.0.2//EN" 
+"http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+
+	<validator type="expression">
+		<param name="expression">registration.emailAddress.equals(registration.confirmEmailAddress)</param>
+		<message key="error.registration.match.email"></message>
+	</validator>
+	<validator type="expression">
+		<param name="expression">registration.password.equals(registration.confirmPassword)</param>
+		<message key="error.registration.match.password"></message>
+	</validator>
+
+    <field name="registration.emailAddress">
+        <field-validator type="requiredstring">
+            <message key="required.emailAddress"></message>
+        </field-validator>
+        <field-validator type="email">
+            <message key="required.emailAddress"></message>
+        </field-validator>
+    </field>
+    <field name="registration.confirmEmailAddress">
+        <field-validator type="requiredstring">
+            <message key="required.confirmEmailAddress"></message>
+        </field-validator>
+        <field-validator type="email">
+            <message key="required.confirmEmailAddress"></message>
+        </field-validator>
+    </field>
+    <field name="registration.password">
+        <field-validator type="requiredstring">
+            <message key="required.password"></message>
+        </field-validator>
+    </field>
+    <field name="registration.confirmPassword">
+        <field-validator type="requiredstring">
+            <message key="required.confirmPassword"></message>
+        </field-validator>
+    </field>
+    <field name="registration.passwordHint">
+        <field-validator type="requiredstring">
+            <message key="required.passwordHint"></message>
+        </field-validator>
+    </field>
+    <field name="registration.firstName">
+        <field-validator type="requiredstring">
+            <message key="required.firstName"></message>
+        </field-validator>
+    </field>
+    <field name="registration.lastName">
+        <field-validator type="requiredstring">
+            <message key="required.lastName"></message>
+        </field-validator>
+    </field>
+</validators>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.as.tutorial.model">
+
+        <class name="Registration" table="REGISTRATION" dynamic-update="true" optimistic-lock="version">
+    		<meta attribute="class-description">
+    			Represents a Registration for the web site.
+    			@author ArcTech Software LLC
+    		</meta>
+    		<meta attribute="implement-equals">true</meta>
+        	<meta attribute="implement-tostring">true</meta>
+    			
+			<id name="registrationId" type="integer" column="REGISTRATION_ID" unsaved-value="none">
+				<meta attribute="scope-set">public</meta>
+	        	<meta attribute="use-in-tostring">true</meta>
+			    <generator class="native"></generator>
+			</id>
+			
+			<version column="LAST_UPDATE_TSTMP" name="updateTimestamp" type="timestamp" unsaved-value="null"/>
+
+        	<property name="emailAddress" column="EMAIL" type="string" not-null="true" length="180">
+            	<meta attribute="use-in-equals">true</meta>
+	        	<meta attribute="use-in-tostring">true</meta>
+            </property>
+		<property name="password" column="PASSWORD" type="string" length="48">
+			<meta attribute="use-in-equals">true</meta>
+	      <meta attribute="use-in-tostring">true</meta>
+            </property>
+		<property name="passwordHint" column="PASSWORD_HINT" type="string" length="50"/>
+		<property name="firstName" column="FIRST_NAME" type="string" not-null="true" length="20"/>
+		<property name="lastName" column="LAST_NAME" type="string" not-null="true" length="20"/>
+		<property name="emailList" column="EMAIL_LIST" type="boolean"/>
+		<property name="createTimestamp" column="CREATE_TSTMP" type="timestamp" not-null="true"/>
+			
+        </class>
+        
+</hibernate-mapping>
